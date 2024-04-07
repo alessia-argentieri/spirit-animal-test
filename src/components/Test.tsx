@@ -12,6 +12,7 @@ type Props = {
 
 const Test: FC<Props> = ({ data }) => {
   const [index, setIndex] = useState(0);
+  const [begin, setBegin] = useState(true);
   const [finished, setFinished] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [resultArray, setResultArray] = useState<string[]>([]);
@@ -30,6 +31,13 @@ const Test: FC<Props> = ({ data }) => {
     ).reduce((a, v) => (v[1] >= a[1] ? v : a), [null, 0])[0];
 
   const myResult = mostFrequent(resultArray);
+
+  const start = () => {
+    setIndex(0);
+    setBegin(false);
+    setSelectedAnswer(null);
+    setResultArray([]);
+  };
 
   const next = () => {
     if (index === data.length - 1) {
@@ -95,6 +103,7 @@ const Test: FC<Props> = ({ data }) => {
 
   const reset = () => {
     setIndex(0);
+    setBegin(true);
     setFinished(false);
     setSelectedAnswer(null);
     setResultArray([]);
@@ -106,41 +115,57 @@ const Test: FC<Props> = ({ data }) => {
   console.log(data.length);
 
   return (
-    <div className="container">
+    <div className={`container ${begin ? "container-start" : ""}`}>
       <h1>Find your spirit animal</h1>
 
-      {finished ? (
+      {begin ? (
         <>
-          <h2>
-            Your spirit animal is: <br /> {profile}
-            <br />
-            <img src={picture} className="img" />
-            <p style={{ fontSize: "16px" }}>{description}</p>
+          <h2 className="h2-start">
+            <br />A spirit animal is a reflection of a person's inner self and
+            the traits and qualities they embody. By taking this test, you will
+            gain a better understanding of your own strengths and unique traits,
+            of who you are and what you stand for.
           </h2>
-          <button className="btn" onClick={reset}>
-            Start again
+          <button className="btn btn-start" onClick={start}>
+            Start
           </button>
         </>
       ) : (
         <>
-          <h2>
-            {index + 1}. {questions.question}
-          </h2>
+          {finished ? (
+            <>
+              <h2>
+                Your spirit animal is: <br /> {profile}
+                <br />
+                <img src={picture} className="img" />
+                <p style={{ fontSize: "16px" }}>{description}</p>
+              </h2>
+              <button className="btn" onClick={reset}>
+                Start again
+              </button>
+            </>
+          ) : (
+            <>
+              <h2>
+                {index + 1}. {questions.question}
+              </h2>
 
-          {questions.choices.map((choice, index) => (
-            <label className="radio" key={index}>
-              <input
-                type="radio"
-                name="choice"
-                onChange={() => setSelectedAnswer(index)}
-                checked={checkedAnswer(index)}
-              ></input>
-              <span className="label">{choice}</span>
-            </label>
-          ))}
-          <button className="btn" onClick={next}>
-            Next
-          </button>
+              {questions.choices.map((choice, index) => (
+                <label className="radio" key={index}>
+                  <input
+                    type="radio"
+                    name="choice"
+                    onChange={() => setSelectedAnswer(index)}
+                    checked={checkedAnswer(index)}
+                  ></input>
+                  <span className="label">{choice}</span>
+                </label>
+              ))}
+              <button className="btn" onClick={next}>
+                Next
+              </button>
+            </>
+          )}
         </>
       )}
     </div>
