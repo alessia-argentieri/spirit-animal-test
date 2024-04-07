@@ -122,9 +122,9 @@ const Test: FC<Props> = ({ data }) => {
         <>
           <h2 className="h2-start">
             <br />A spirit animal is a reflection of a person's inner self and
-            the traits and qualities they embody. By taking this test, you will
-            gain a better understanding of your own strengths and unique traits,
-            of who you are and what you stand for.
+            the traits and qualities they embody. <br /> By taking this test,
+            you will gain a better understanding of your own strengths and
+            unique traits, of who you are and what you stand for.
           </h2>
           <button className="btn btn-start" onClick={start}>
             Start
